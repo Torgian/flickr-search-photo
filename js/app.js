@@ -3,12 +3,16 @@ $(document).ready(function() {
 
  $('form').submit(function (evt) {
     evt.preventDefault();
-    var searchTerm = $('#search').val()
+    var $searchTerm = $('#search');
+    var $submitButton = $('#submit');
+   
+   $searchTerm.prop("disabled", true);
+   $submitButton.attr("disabled", true).val("searching....");
     
    
     // the AJAX part
     var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-    var search = searchTerm;
+    var search = $searchTerm.val();
     var flickrOptions = {
       tags: search,
       format: "json"
@@ -22,6 +26,8 @@ $(document).ready(function() {
       }); // end each
       photoHTML += '</ul>';
       $('#photos').html(photoHTML);
+      $searchTerm.prop("disabled", false);
+      $submitButton.attr("disabled", false).val("Search");
     }
     $.getJSON(flickerAPI, flickrOptions, displayPhotos);
 
