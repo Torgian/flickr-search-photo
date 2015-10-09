@@ -1,7 +1,60 @@
 $(document).ready(function() {
+  //var html = '';
+  
+
+  $('.toggle-nav').click(function(e) {
+    
+    $(this).toggleClass('active');
+    $('.menu ul').toggleClass('active'); 
+
+    e.preventDefault();
+  });
+
+  $('li a').click(function(event){
+    $('.toggle-nav').prop('value', this.text);
+    $('.menu ul').toggleClass('active');
+    $('.toggle-nav').toggleClass('active');
+    var beach = $('.toggle-nav').prop('value');    
+    var beachHTML = $("#beach_info").html(function()  {
+      var Html ='';
+      Html += $("#beach_info").append($("<div id='titleBar'/>"));
+      //clear the area!
+      $( "#titleBar" ).empty();
+      //Title bar for beach name
+      Html += $('#titleBar').append(beach + " Surf Report");
+      //Surf info. Divided into date, surf, swell, wind, weather         
+
+                       
+      Html += makeTable($('#titleBar'), data1);
+      //Timestamp
+      var myDate = new Date(resultsData.timestamp *1000); 
+      $('.CSSTableGenerator').before($("<div id='dateDiv'/>"));
+      $('#dateDiv').append(myDate.toGMTString());
+      
+          
+     
+
+        
+  });
 
 
- $('form').submit(function (evt) {
+
+  
+  
+
+
+
+    
+  })
+
+
+
+
+
+
+
+
+   $('form').submit(function (evt) {
     evt.preventDefault();
     var $searchTerm = $('#search');
     var $submitButton = $('#submit');
@@ -11,25 +64,27 @@ $(document).ready(function() {
     
    
     // the AJAX part
-    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-    var search = $searchTerm.val();
-    var flickrOptions = {
-      tags: search,
+    //surfTwAPI link: placeholder
+    var surfTwAPI = "";
+    
+    var surfOptions = {
+      
       format: "json"
     };
-    function displayPhotos(data) {
-      var photoHTML = '<ul>';
+    function displaySurf(data) {
+      var surfHTML = '<ul>';
       $.each(data.items,function(i,photo) {
-        photoHTML += '<li class="grid-25 tablet-grid-50">';
-        photoHTML += '<a href="' + photo.link + '" class="image">';
-        photoHTML += '<img src="' + photo.media.m + '"></a></li>';
+        surfHTML += '<li class="grid-25 tablet-grid-50">';
+        surfHTML += surfOptions.swell.minBreakingHeight;
+        surfHTML += '<img src="icons/swell"></a></li>';
       }); // end each
-      photoHTML += '</ul>';
-      $('#photos').html(photoHTML);
+      surfHTML += '</ul>';
+      $('#location').html(surfHTML);
       $searchTerm.prop("disabled", false);
       $submitButton.attr("disabled", false).val("Search");
     }
-    $.getJSON(flickerAPI, flickrOptions, displayPhotos);
+    $.getJSON(surfTwAPI, surfOptions, displaySurf);
 
   }); // end click
 }); //end Json form submit
+
